@@ -15,29 +15,25 @@ public class AddressBookMain {
 		this.contacts = new LinkedList<ContactDetails>();
 		this.nameToContactMap = new LinkedHashMap<String, ContactDetails>();
 	}
-	public void addContact() {
-		do {
-			System.out.println("Enter the contact details in the given
-					order:\nfirstname\nlastname");
-					ContactDetails checkContact = new ContactDetails(sc.nextLine(),
-							sc.nextLine());
-			if (contacts.stream().anyMatch(contact -> contact.equals(checkContact))) {
-				System.out.println("Same entry already present.");
-			} else {
-				System.out.println(
-						"Enter the contact details in the given
-						order:\nfirstname\nlastname\naddress\nstate\nzip\nphone no.\nemail");
-						ContactDetails newContact = new ContactDetails(sc.nextLine(),
-								sc.nextLine(), sc.nextLine(),sc.nextLine(),
-								Integer.parseInt(sc.nextLine()),
-								Long.parseLong(sc.nextLine()), sc.nextLine());
-				this.contacts.add(newContact);
-				this.nameToContactMap.put(newContact.getFirstName() + " " +
-						newContact.getLastName(), newContact);
-			}
-			System.out.println("Enter 1 to add another contact, else enter 0: ");
-		} while (Integer.parseInt(sc.nextLine()) == 1);
-	}
+	public static void getPersonsByCityOrState() {
+System.out.println("Choose \n1 To search by city\n2 To search by state\nEnter your
+choice: ");
+String option = (Integer.parseInt(sc.nextLine()) == 1) ? CITY : STATE;
+System.out.println("Enter the name of " + option + ": ");
+String cityOrStateName = sc.nextLine();
+nameToAddressBookMap.keySet().stream().forEach(addressBookName -> {
+AddressBookMain addressBook =
+nameToAddressBookMap.get(addressBookName);
+System.out.println("Persons in the " + option + " " + cityOrStateName + " in
+the address book "
++ addressBookName + " are: ");
+addressBook.contacts.stream().filter(
+contact -> ((option == CITY ? contact.getAddress() :
+contact.getState()).equals(cityOrStateName)))
+.forEach(contact -> System.out.println(contact));
+System.out.println("");
+});
+}
 	public static void main(String[] args) {
 		System.out.println("Enter the name of the addressbook:");
 		String book = sc.nextLine();
