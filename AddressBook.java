@@ -1,7 +1,9 @@
 public class AddressBookMain {
 	private ArrayList<ContactDetails> contactArrayList;
+	private Map<String, ContactDetails> nameToContactDetailsMap;
 	private AddressBookMain() {
-		contactArrayList = new ArrayList<>(); //using ArrayList in place of array
+		contactArrayList = new ArrayList<>();
+		nameToContactDetailsMap = new HashMap<>();
 	}
 	private void addContactDetails(String firstName, String lastName, String address, String
 			state, int zip, long phoneNo, String emailId) {
@@ -9,6 +11,11 @@ public class AddressBookMain {
 		contactDetail.setContactDetails(firstName, lastName, address, state, zip, phoneNo,
 				emailId);
 		contactArrayList.add(contactDetail);
+		nameToContactDetailsMap.put(firstName.concat(" " + lastName), contactDetail);
+	}
+	private void viewContactDetails(String name) {
+		ContactDetails contactObj = nameToContactDetailsMap.get(name);
+		System.out.println(contactObj);
 	}
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -36,31 +43,9 @@ public class AddressBookMain {
 			addressBook.addContactDetails(firstName, lastName, address, state, zip,
 					phoneNo, emailId);
 		}
-		System.out.println("Added Succesfully");
-	}
-}
-public class ContactDetails {
-	public String firstName;
-	public String lastName;
-	private String address; //address components don't have to be used so declaring as string
-	rather than string array
-	private String state;
-	private int zip;
-	private long phoneNo;
-	private String emailId;
-	public void setContactDetails(String firstName, String lastName, String address, String state,
-			int zip, long phoneNo, String emailId) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.state = state;
-		this.zip = zip;
-		this.phoneNo = phoneNo;
-		this.emailId = emailId;
-	}
-	@Override
-	public String toString() {
-		return "Name: " + firstName + " " + lastName + " Address: " + address + " State: " + state + " Zip: " +
-				zip + " Phone No: " + phoneNo + " Email: " + emailId;
+		//printing by calling key of HashMap
+		System.out.println("Enter name of person you want to print contant details of: ");
+		String name = sc.nextLine();
+		addressBook.viewContactDetails(name);
 	}
 }
